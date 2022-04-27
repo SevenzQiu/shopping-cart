@@ -21,5 +21,13 @@ return [
             'schemaCacheDuration' => 24*3600,
             'schemaCache' => 'cache',
         ],
+
+        // redis
+        'redis' => [
+            'class' => 'yii\redis\Connection',
+            'hostname' => 'localhost',
+            'port' => 6379,
+            'database' => 0,
+        ],
     ],
 ];

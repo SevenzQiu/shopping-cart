@@ -24,6 +24,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
+                        'class' => 'yii\filters\AccessRule',
                         'actions' => ['login', 'error'],
                         'allow' => true,
                     ],

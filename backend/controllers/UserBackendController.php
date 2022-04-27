@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
+use yii\filters\AccessControl;
 
 /**
  * UserBackendController implements the CRUD actions for UserBackend model.
@@ -22,8 +23,21 @@ class UserBackendController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            // 当前rule将会针对这里设置的actions起作用，如果actions不设置，默认就是当前控制器的所有操作
+                            'actions' => ['index', 'view', 'create', 'update', 'delete', 'signup'],
+                            // 设置actions的操作是允许访问还是拒绝访问
+                            'allow' => true,
+                            // @ 当前规则针对认证过的用户; ? 所有方可均可访问
+                            'roles' => ['@'],
+                        ],
+                    ],
+                ],
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
