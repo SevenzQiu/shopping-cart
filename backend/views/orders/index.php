@@ -6,9 +6,11 @@ use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use backend\models\Orders;
 use backend\models\Products;
+use backend\models\ProductsSearch;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\OrderSearch */
+/* @var $orders backend\models\Orders */
+/* @var $products backend\models\ProductsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Orders';
@@ -18,28 +20,31 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Orders', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <form action="/backend/web/index.php/?r=orders/addcart" method="post">
+        <table class="table table-hover ">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>名稱</th>
+                <th>剩餘</th>
+                <th>加入購物車</th> <!-- 空欄位放checkbox -->
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($products as $product): ?>
+                <tr>
+                    <td><?=$product->id?></td>
+                    <td><?=$product->name?></td>
+                    <td><?=$product->leftNum?></td>
+                    <td><input type="checkbox" name="cartList[]" value="<?=$product->id?>"></td>
+                </tr>
+            <?php endforeach;?>
+            </tbody>
+        </table>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <button type="submit" class="btn btn-primary">提交</button>
+    </form>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            'id',
-            'name:ntext',
-            'totalNum',
-            'leftNum',
-            'memo:ntext',
-            [
-                'label' => 'My Label',
-                'format' => 'raw',
-                'value' => Html::a('Click me', ['site/index'], ['class' => 'btn btn-success btn-xs', 'data-pjax' => 0]),
-            ],
-        ],
-    ]); ?>
 
 
 </div>

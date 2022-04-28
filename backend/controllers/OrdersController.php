@@ -16,6 +16,9 @@ use yii\filters\VerbFilter;
  */
 class OrdersController extends Controller
 {
+    // Csrf驗證
+    public $enableCsrfValidation = false;
+
     /**
      * @inheritDoc
      */
@@ -32,12 +35,18 @@ class OrdersController extends Controller
                             'allow' => true,
                             'roles' => ['@'],
                         ],
+                        [
+                            'actions' => ['addcart'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
                     ],
                 ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                        'addcart' => ['POST'],
                     ],
                 ],
             ]
@@ -51,12 +60,45 @@ class OrdersController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ProductsSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+        // 未登入就送他去登入
+        if (\Yii::$app->user->isGuest) {
+            return $this -> redirect(array('site/login'));
+        }
+
+        $query = ProductsSearch::find();
+        $products = $query->all();
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'products' => $products,
+        ]);
+    }
+
+    /**
+     * 加入購物車
+     * @return string|\yii\web\Response
+     */
+    public function actionAddcart()
+    {
+        // 未登入就送他去登入
+        if (\Yii::$app->user->isGuest) {
+            return $this -> redirect(array('site/login'));
+        }
+
+        // 取得所有資料
+        $request = \Yii::$app->request;
+
+        // 取得選取列表
+        $cartList = $request->post('cartList');
+
+        // 寫入 redis
+        // code ...
+
+        // 刷回頁面需求資料
+        $query = ProductsSearch::find();
+        $products = $query->all();
+
+        return $this->render('index', [
+            'products' => $products,
         ]);
     }
 
