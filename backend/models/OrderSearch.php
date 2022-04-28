@@ -2,9 +2,9 @@
 
 namespace backend\models;
 
+use backend\models\Orders;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Orders;
 
 /**
  * OrderSearch represents the model behind the search form of `backend\models\Orders`.
@@ -65,6 +65,31 @@ class OrderSearch extends Orders
 
         $query->andFilterWhere(['like', 'pList', $this->pList])
             ->andFilterWhere(['like', 'placed', $this->placed]);
+
+        return $dataProvider;
+    }
+
+    // userId 取 已下單列表(倒序)
+    public function getSearchDESC($userId)
+    {
+        $query = Orders::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort'=> ['defaultOrder' => ['time' => SORT_DESC]],
+        ]);
+
+        $this->load([
+            'uid' => $userId,
+        ]);
+
+        if (!$this->validate()) {
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere([
+            'uid' => $this->uid,
+        ]);
 
         return $dataProvider;
     }

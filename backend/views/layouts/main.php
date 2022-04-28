@@ -45,6 +45,9 @@ AppAsset::register($this);
         $menuItems[] = ['label' => 'Order', 'url' => ['/orders/index']];
         // 購物車列表
         $menuItems[] = ['label' => 'Cart', 'url' => ['/cart/index']];
+        // 已購訂單
+        $menuItems[] = ['label' => 'Ordering', 'url' => ['/ordering/index']];
+
         // 登出
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post', ['class' => 'form-inline'])
