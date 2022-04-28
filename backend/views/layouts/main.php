@@ -43,6 +43,8 @@ AppAsset::register($this);
     } else {
         // 訂單列表
         $menuItems[] = ['label' => 'Order', 'url' => ['/orders/index']];
+        // 購物車列表
+        $menuItems[] = ['label' => 'Cart', 'url' => ['/cart/index']];
         // 登出
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post', ['class' => 'form-inline'])

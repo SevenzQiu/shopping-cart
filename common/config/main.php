@@ -21,5 +21,14 @@ return [
             'schemaCacheDuration' => 24*3600,
             'schemaCache' => 'cache',
         ],
+
+        // redis
+        'redis'  => [
+            'class'    => 'yii\redis\Connection',
+//            'hostname' => 'admin',
+//            'password' => '',
+            'port'     =>6379,//默认的端口  配置其他端口在这里改
+            'database' => 0,//使用的第几个DB
+        ],
     ],
 ];

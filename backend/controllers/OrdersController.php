@@ -10,6 +10,7 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * OrdersController implements the CRUD actions for Orders model.
@@ -88,10 +89,12 @@ class OrdersController extends Controller
         $request = \Yii::$app->request;
 
         // 取得選取列表
-        $cartList = $request->post('cartList');
+        $cartList = $request->post('cartList') ?? [];
 
         // 寫入 redis
-        // code ...
+        $redis = Yii::$app->redis;
+        $redisKey = 'cart:' . \Yii::$app->user->id; // redis key
+        $redis->set($redisKey, json_encode($cartList));
 
         // 刷回頁面需求資料
         $query = ProductsSearch::find();

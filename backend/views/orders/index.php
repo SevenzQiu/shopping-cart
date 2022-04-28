@@ -44,7 +44,4 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <button type="submit" class="btn btn-primary">提交</button>
     </form>
-
-
-
 </div>
